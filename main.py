@@ -10,6 +10,7 @@ import getpass
 
 # auth
 from fitur.auth import login
+from fitur.auth import register
 
 # Akun
 from fitur.akun import daftar_Tambah_Akun
@@ -71,6 +72,8 @@ def main():
             password = getpass.getpass("Masukkan password: ")
             login(username, password)
         elif user_input == "2":
+            register()
+        elif user_input == "3":
             sys.exit()
         else:
             print("Opsi tidak valid. Silahkan coba lagi.")
@@ -174,7 +177,7 @@ def allfitur_Jamaah():
             if input_log == "y":
                 main()
             elif input_log == "n":
-                allfitur_Staff()
+                allfitur_Jamaah()
             else:
                 print("Harap Masukkan input y/n")
                 allfitur_Jamaah()

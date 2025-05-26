@@ -3,10 +3,6 @@ import psycopg2
 import pandas as pd
 from tabulate import tabulate
 from config import config
-from datetime import datetime
-import sys
-from decimal import Decimal
-import getpass
 
 
 ################################### MENU CRUD AKUN + FUNGSI + READ ROLE(BPH) ################################################
@@ -40,7 +36,18 @@ def read_data_akun():
         conn = None
         params = config()
         conn = psycopg2.connect(**params)
-        sql = "SELECT * FROM Akun ORDER BY Id_Akun ASC"
+
+        sql = """
+        SELECT 
+            a.Id_Akun,
+            a.Username,
+            a.Password,
+            a.Id_Role,
+            r.Nama_Role
+        FROM Akun a
+        JOIN Role r ON a.Id_Role = r.Id_Role
+        ORDER BY a.Id_Akun ASC
+        """
 
         import warnings
 
@@ -50,7 +57,7 @@ def read_data_akun():
 
         print(tabulate(df, headers="keys", tablefmt="grid"))
     except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
+        print(f"Error saat membaca data Akun: {error}")
     finally:
         if conn is not None:
             conn.close()

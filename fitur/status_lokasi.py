@@ -43,7 +43,6 @@ def read_data_lokasi():
             df = pd.read_sql_query(sql, conn)
 
         if "harga_lokasi" in df.columns:
-            # Ubah ke string format angka rupiah
             df["harga_lokasi"] = df["harga_lokasi"].apply(
                 lambda x: f"{int(x):,}".replace(",", ".")
             )
@@ -54,8 +53,6 @@ def read_data_lokasi():
     finally:
         if conn is not None:
             conn.close()
-    input("\nTekan Enter untuk kembali...")
-    os.system("cls")
 
 
 ################################### READ DATA STATUS PEMBAYARAN DAN sLOKASI ################################################
