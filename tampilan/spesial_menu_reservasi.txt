@@ -1,0 +1,6 @@
+
+[ 1 ] Tambah Data
+[ 2 ] Edit Data
+[ 3 ] Hapus Data
+[ 4 ] Transaksi
+[ 5 ] Kembali

@@ -1,5 +1,4 @@
 
-[ 1 ] Baca Data
-[ 2 ] Tambah Data
-[ 3 ] Detail Pengeluaran
-[ 4 ] Kembali
+[ 1 ] Tambah Data
+[ 2 ] Detail Pengeluaran
+[ 3 ] Kembali

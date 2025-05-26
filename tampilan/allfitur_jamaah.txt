@@ -1,6 +1,6 @@
 ===================\               HALO JAMAAH!!                /=========================
 |                    [========================================]                         |
-|                             [ 1 ] Riwayat Pengajuan Reservasi                         |
+|                             [ 1 ] Histori Reservasi	                                |
 |                             [ 2 ] Ajukan Reservasi                                    |                                           
 |			      [ 3 ] Keluar Aplikasi                                     |
 |                             [ 4 ] Logout	            				|                                                       
