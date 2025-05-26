@@ -13,13 +13,9 @@ from fitur.auth import login
 
 # Akun
 from fitur.akun import daftar_Tambah_Akun
-from fitur.akun import read_data_akun
-from fitur.akun import read_data_akun_jamaah
-from fitur.akun import read_data_akun_staff
 
 # tabungan
 from fitur.tabungan import daftar_Tambah_Tabungan
-from fitur.tabungan import read_data_tabungan
 
 # pemasukan
 from fitur.pemasukan import daftar_Pemasukan_Bph
@@ -33,6 +29,9 @@ from fitur.pengeluaran import daftar_Pengeluaran_Staff
 from fitur.reservasi import read_reservasi_masjid
 from fitur.reservasi import insert_reservasi_masjid
 from fitur.reservasi import daftar_reservasi_Bph
+
+# transaksi
+from fitur.reservasi import read_data_transaksi
 
 
 def connect():
@@ -135,8 +134,10 @@ def allfitur_Staff():
         elif user_input == "3":
             read_reservasi_masjid()
         elif user_input == "4":
-            sys.exit()
+            read_data_transaksi()
         elif user_input == "5":
+            sys.exit()
+        elif user_input == "6":
             input_log = input("Apakah anda Yakin untuk Logout? (y/n) : ")
             if input_log == "y":
                 main()

@@ -10,7 +10,7 @@ def daftar_Tansaksi_Bph():
     os.system("cls")
 
     while True:
-        read_data_transaksi()
+        read_data_transaksi_khusus_bph()
         namafile = "tampilan/spesial_menu_transaksi.txt"
         with open(namafile, "r") as file:
             isi_file = file.read()
@@ -234,7 +234,7 @@ def delete_reservasi_masjid():
             conn.close()
 
 
-def read_data_transaksi():
+def read_data_transaksi_khusus_bph():
 
     try:
         conn = None
@@ -273,6 +273,49 @@ def read_data_transaksi():
     finally:
         if conn is not None:
             conn.close()
+
+
+def read_data_transaksi():
+    os.system("cls")
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        sql = """
+        SELECT 
+            t.Id_Transaksi,
+            t.Id_Reservasi,
+            r.Tanggal_Reservasi,
+            t.Id_Akun as akun_staff,
+            a.Username,
+            t.Tanggal_Pembayaran,
+            t.Id_Tabungan,
+            tb.Nama_Tabungan,
+            t.Id_Status,
+            sp.Jenis_Status
+        FROM Transaksi t
+        JOIN Reservasi_Masjid r ON t.Id_Reservasi = r.Id_Reservasi
+        LEFT JOIN Akun a ON t.Id_Akun = a.Id_Akun
+        LEFT JOIN Tabungan_Masjid tb ON t.Id_Tabungan = tb.Id_Tabungan
+        LEFT JOIN Status_Pembayaran sp ON t.Id_Status = sp.Id_Status
+        ORDER BY t.Id_Transaksi ASC
+        """
+
+        import warnings
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", UserWarning)
+            df = pd.read_sql_query(sql, conn)
+
+        print(tabulate(df, headers="keys", tablefmt="grid"))
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(f"Error saat membaca data Transaksi: {error}")
+    finally:
+        if conn is not None:
+            conn.close()
+    input("\nTekan Enter untuk kembali ke menu...")
+    os.system("cls")
 
 
 def update_transaksi():

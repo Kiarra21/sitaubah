@@ -2,7 +2,8 @@
 |                    [========================================]                         |
 |                             [ 1 ] Pemasukan                                           |
 |                             [ 2 ] Pengeluaran                                         |
-|                             [ 3 ] Histori Reservasi                                   |                                                                                  
-|			      [ 4 ] Keluar Aplikasi                                     |
-|                             [ 5 ] Logout	            				|                                                       
+|                             [ 3 ] Histori Reservasi					|
+|                             [ 4 ] Transaksi Reservasi    				|                                                                                  
+|			      [ 5 ] Keluar Aplikasi                                     |
+|                             [ 6 ] Logout	            				|                                                       
 =========================================================================================                 

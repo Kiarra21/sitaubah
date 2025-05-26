@@ -42,12 +42,20 @@ def read_data_lokasi():
             warnings.simplefilter("ignore", UserWarning)
             df = pd.read_sql_query(sql, conn)
 
-        print(tabulate(df, headers="keys", tablefmt="grid"))
+        if "harga_lokasi" in df.columns:
+            # Ubah ke string format angka rupiah
+            df["harga_lokasi"] = df["harga_lokasi"].apply(
+                lambda x: f"{int(x):,}".replace(",", ".")
+            )
+
+        print(tabulate(df, headers="keys", tablefmt="grid", showindex=False))
     except (Exception, psycopg2.DatabaseError) as error:
         print(f"Error saat membaca data Lokasi: {error}")
     finally:
         if conn is not None:
             conn.close()
+    input("\nTekan Enter untuk kembali...")
+    os.system("cls")
 
 
 ################################### READ DATA STATUS PEMBAYARAN DAN sLOKASI ################################################
