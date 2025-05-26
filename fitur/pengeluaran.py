@@ -126,7 +126,6 @@ def read_data_detail_pengeluaran():
             warnings.simplefilter("ignore", UserWarning)
             df = pd.read_sql_query(sql, conn)
 
-        # Pastikan kolom Nominal aman untuk dikonversi
         if "Nominal" in df.columns:
             df["Nominal"] = df["Nominal"].fillna(0).astype(float).astype(int)
 

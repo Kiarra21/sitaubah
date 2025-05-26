@@ -81,7 +81,6 @@ def read_reservasi_masjid():
             warnings.simplefilter("ignore", UserWarning)
             df = pd.read_sql_query(sql, conn)
 
-        # Format harga_lokasi agar tampil sebagai angka biasa (tanpa notasi ilmiah)
         df["harga_lokasi"] = df["harga_lokasi"].astype(float).astype(int)
 
         print(tabulate(df, headers="keys", tablefmt="grid"))
@@ -123,7 +122,6 @@ def read_reservasi_masjid_khusus_bph():
             warnings.simplefilter("ignore", UserWarning)
             df = pd.read_sql_query(sql, conn)
 
-        # Format harga_lokasi agar tampil sebagai angka biasa (tanpa notasi ilmiah)
         df["harga_lokasi"] = df["harga_lokasi"].astype(float).astype(int)
 
         print(tabulate(df, headers="keys", tablefmt="grid"))
@@ -151,7 +149,6 @@ def insert_reservasi_masjid():
         id_lokasi = int(input("Masukkan ID Lokasi: "))
         tanggal_reservasi = input("Masukkan Tanggal Reservasi (YYYY-MM-DD HH:MM): ")
 
-        # Insert ke Reservasi_Masjid
         sql_reservasi = """
         INSERT INTO Reservasi_Masjid (Tanggal_Reservasi, Id_Akun, Id_Lokasi)
         VALUES (%s, %s, %s)
@@ -161,7 +158,6 @@ def insert_reservasi_masjid():
         cur.execute(sql_reservasi, (tanggal_reservasi, id_akun, id_lokasi))
         id_reservasi_baru = cur.fetchone()[0]
 
-        # Insert otomatis ke Transaksi (kolom nullable diisi NULL)
         sql_transaksi = """
         INSERT INTO Transaksi (Id_Reservasi)
         VALUES (%s)
@@ -222,7 +218,6 @@ def delete_reservasi_masjid():
         read_reservasi_masjid_khusus_bph()
         id_reservasi = int(input("Masukkan ID Reservasi yang ingin dihapus: "))
 
-        # Hapus terlebih dahulu transaksi terkait
         sql_delete_transaksi = "DELETE FROM Transaksi WHERE Id_Reservasi = %s"
         sql_delete_reservasi = "DELETE FROM Reservasi_Masjid WHERE Id_Reservasi = %s"
 
@@ -301,7 +296,6 @@ def update_transaksi():
         read_data_status_pembayaran()
         id_status = input("ID Status Pembayaran: ")
 
-        # Ambil nilai sebelumnya
         cur = conn.cursor()
         cur.execute("SELECT * FROM Transaksi WHERE Id_Transaksi = %s", (id_transaksi,))
         data_lama = cur.fetchone()
@@ -312,7 +306,6 @@ def update_transaksi():
             os.system("cls")
             return
 
-        # Gunakan nilai baru jika diisi, jika tidak pakai nilai lama
         sql = """
         UPDATE Transaksi
         SET Id_Akun = %s,
