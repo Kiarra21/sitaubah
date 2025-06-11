@@ -10,7 +10,7 @@ def daftar_Tansaksi_Bph():
     os.system("cls")
 
     while True:
-        read_data_transaksi_khusus_bph()
+        read_data_transaksi()
         namafile = "tampilan/spesial_menu_transaksi.txt"
         with open(namafile, "r") as file:
             isi_file = file.read()
@@ -21,6 +21,28 @@ def daftar_Tansaksi_Bph():
             update_transaksi()
         elif user_input == "2":
             daftar_reservasi_Bph()
+        else:
+            print("Opsi Tidak valid")
+            input("Tekan Enter untuk lanjut...")
+
+
+def daftar_Tansaksi_Staff():
+    from main import allfitur_Staff
+
+    os.system("cls")
+
+    while True:
+        read_data_transaksi()
+        namafile = "tampilan/spesial_menu_transaksi_staff.txt"
+        with open(namafile, "r") as file:
+            isi_file = file.read()
+            print(isi_file)
+
+        user_input = input("Pilih opsi: ")
+        if user_input == "1":
+            update_status_pembayaran_transaksi()
+        elif user_input == "2":
+            allfitur_Staff()
         else:
             print("Opsi Tidak valid")
             input("Tekan Enter untuk lanjut...")
@@ -234,47 +256,6 @@ def delete_reservasi_masjid():
             conn.close()
 
 
-def read_data_transaksi_khusus_bph():
-
-    try:
-        conn = None
-        params = config()
-        conn = psycopg2.connect(**params)
-
-        sql = """
-        SELECT 
-            t.Id_Transaksi,
-            t.Id_Reservasi,
-            r.Tanggal_Reservasi,
-            t.Id_Akun as akun_staff,
-            a.Username,
-            t.Tanggal_Pembayaran,
-            t.Id_Tabungan,
-            tb.Nama_Tabungan,
-            t.Id_Status,
-            sp.Jenis_Status
-        FROM Transaksi t
-        JOIN Reservasi_Masjid r ON t.Id_Reservasi = r.Id_Reservasi
-        LEFT JOIN Akun a ON t.Id_Akun = a.Id_Akun
-        LEFT JOIN Tabungan_Masjid tb ON t.Id_Tabungan = tb.Id_Tabungan
-        LEFT JOIN Status_Pembayaran sp ON t.Id_Status = sp.Id_Status
-        ORDER BY t.Id_Transaksi ASC
-        """
-
-        import warnings
-
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore", UserWarning)
-            df = pd.read_sql_query(sql, conn)
-
-        print(tabulate(df, headers="keys", tablefmt="grid"))
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(f"Error saat membaca data Transaksi: {error}")
-    finally:
-        if conn is not None:
-            conn.close()
-
-
 def read_data_transaksi():
     os.system("cls")
     try:
@@ -314,8 +295,6 @@ def read_data_transaksi():
     finally:
         if conn is not None:
             conn.close()
-    input("\nTekan Enter untuk kembali ke menu...")
-    os.system("cls")
 
 
 def update_transaksi():
@@ -379,6 +358,52 @@ def update_transaksi():
     finally:
         if conn is not None:
             conn.close()
+
+
+def update_status_pembayaran_transaksi():
+    from fitur.status_lokasi import read_data_status_pembayaran
+
+    os.system("cls")
+    try:
+        conn = None
+        params = config()
+        conn = psycopg2.connect(**params)
+
+        read_data_transaksi()
+        id_transaksi = int(
+            input("Masukkan ID Transaksi yang ingin diperbarui statusnya: ")
+        )
+
+        read_data_status_pembayaran()
+        id_status_baru = int(input("Masukkan ID Status Pembayaran baru: "))
+
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM Transaksi WHERE Id_Transaksi = %s", (id_transaksi,))
+        data = cur.fetchone()
+
+        if not data:
+            print("Data transaksi tidak ditemukan.")
+        else:
+            cur.execute(
+                """
+                UPDATE Transaksi
+                SET Id_Status = %s
+                WHERE Id_Transaksi = %s
+            """,
+                (id_status_baru, id_transaksi),
+            )
+            conn.commit()
+            print("Status pembayaran berhasil diperbarui.")
+
+        cur.close()
+    except (Exception, psycopg2.DatabaseError, ValueError) as error:
+        print(f"Error saat mengubah status pembayaran: {error}")
+    finally:
+        if conn is not None:
+            conn.close()
+
+    input("Tekan Enter untuk kembali...")
+    os.system("cls")
 
 
 ################################### MENU RESERVASI DAN TRANSKASI ################################################

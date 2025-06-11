@@ -148,7 +148,6 @@ def read_data_detail_pemasukan():
             warnings.simplefilter("ignore", UserWarning)
             df = pd.read_sql_query(sql, conn)
 
-        # Cek apakah kolom "Nominal" ada sebelum mengubah tipe datanya
         if "Nominal" in df.columns:
             df["Nominal"] = df["Nominal"].fillna(0).astype(float).astype(int)
 

@@ -30,6 +30,7 @@ from fitur.pengeluaran import daftar_Pengeluaran_Staff
 from fitur.reservasi import read_reservasi_masjid
 from fitur.reservasi import insert_reservasi_masjid
 from fitur.reservasi import daftar_reservasi_Bph
+from fitur.reservasi import daftar_Tansaksi_Staff
 
 # transaksi
 from fitur.reservasi import read_data_transaksi
@@ -137,7 +138,7 @@ def allfitur_Staff():
         elif user_input == "3":
             read_reservasi_masjid()
         elif user_input == "4":
-            read_data_transaksi()
+            daftar_Tansaksi_Staff()
         elif user_input == "5":
             sys.exit()
         elif user_input == "6":
